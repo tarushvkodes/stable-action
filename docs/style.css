@@ -149,7 +149,8 @@ html, body {
   font-size: 0.65rem;
   color: rgba(255,255,255,0.5);
 }
-.dev-credit strong { color: rgba(255,255,255,0.75); }
+.dev-credit a { color: rgba(255,255,255,0.75); text-decoration: none; }
+.dev-credit a:hover { text-decoration: underline; }
 
 .rec-indicator {
   display: flex;
