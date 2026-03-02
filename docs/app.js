@@ -29,6 +29,7 @@
   var playbackClose = document.getElementById("playbackClose");
   var playbackVideo = document.getElementById("playbackVideo");
   var downloadLink = document.getElementById("downloadLink");
+  var flipBtn = document.getElementById("flipBtn");
 
   // ===== State =====
   var actionMode = false;
@@ -39,6 +40,7 @@
   var stream = null;
   var animFrameId = null;
   var motionStarted = false;
+  var currentFacingMode = "environment";
 
   // ===== Motion State (ported from MotionManager.swift) =====
   var roll = 0;
@@ -74,14 +76,32 @@
     initCamera();
   });
 
+  // ===== Camera Flip =====
+  flipBtn.addEventListener("click", function () {
+    switchCamera();
+  });
+
   // ===== Camera Initialisation =====
-  function initCamera() {
-    // Request motion permission on iOS (must be from user gesture)
-    requestMotionPermission()
+  function initCamera(facingMode) {
+    facingMode = facingMode || "environment";
+
+    // Stop any active recording before tearing down the stream
+    if (isRecording) stopRecording();
+
+    // Stop existing stream tracks when switching cameras
+    if (stream) {
+      stream.getTracks().forEach(function (t) { t.stop(); });
+      stream = null;
+    }
+
+    // Only request motion permission on first launch
+    var motionPromise = motionStarted ? Promise.resolve() : requestMotionPermission();
+
+    motionPromise
       .then(function () {
         return navigator.mediaDevices.getUserMedia({
           video: {
-            facingMode: { ideal: "environment" },
+            facingMode: { ideal: facingMode },
             width: { ideal: 1920 },
             height: { ideal: 1440 }
           },
@@ -90,14 +110,24 @@
       })
       .then(function (mediaStream) {
         stream = mediaStream;
-        cameraVideo.srcObject = stream;
-        cameraVideo.play();
+        currentFacingMode = facingMode;
 
+        // Show camera screen BEFORE attaching the stream.
+        // iOS/iPadOS Safari shows a black frame if the video element
+        // sits inside a hidden container when srcObject is first set.
         startScreen.style.display = "none";
         cameraScreen.style.display = "flex";
 
+        cameraVideo.srcObject = stream;
+
+        return cameraVideo.play().catch(function (e) {
+          // AbortError can fire when play() is interrupted by a new call
+          if (e.name !== "AbortError") throw e;
+        });
+      })
+      .then(function () {
         startMotionTracking();
-        startRenderLoop();
+        if (!animFrameId) startRenderLoop();
       })
       .catch(function (err) {
         console.error("Init error:", err);
@@ -109,6 +139,11 @@
         }
         alert(msg);
       });
+  }
+
+  function switchCamera() {
+    var newMode = currentFacingMode === "environment" ? "user" : "environment";
+    initCamera(newMode);
   }
 
   // ===== Motion Permission (iOS requires explicit permission request) =====
