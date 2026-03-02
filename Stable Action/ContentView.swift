@@ -25,14 +25,14 @@ struct ContentView: View {
 
                 // ── Top bar: credits ──────────────────────────────────────
                 HStack {
-                    Link(destination: URL(string: "https://buymeacoffee.com/rudrashah")!) {
+                    Link(destination: URL(string: "https://tarushv.com")!) {
                         HStack(spacing: 5) {
-                            Image(systemName: "cup.and.saucer.fill")
+                            Image(systemName: "globe")
                                 .font(.system(size: 12, weight: .semibold))
-                            Text("Buy me a coffee")
+                            Text("tarushv.com")
                                 .font(.system(size: 12, weight: .semibold, design: .rounded))
                         }
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(.blue)
                         .padding(.horizontal, 10)
                         .padding(.vertical, 5)
                         .background(.white.opacity(0.1))
@@ -44,7 +44,7 @@ struct ContentView: View {
                     HStack(spacing: 4) {
                         Text("Developer:")
                             .foregroundStyle(.white.opacity(0.5))
-                        Text("Rudra Shah")
+                        Text("Tarushv Kosgi")
                             .foregroundStyle(.white.opacity(0.75))
                     }
                     .font(.system(size: 11, weight: .medium, design: .rounded))

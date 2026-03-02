@@ -160,8 +160,8 @@ Stable Action also engages the iPhone's built-in ISP stabilisation on every fram
 If you find this project useful, consider buying me a coffee ☕
 
 <p align="center">
-  <a href="https://buymeacoffee.com/rudrashah">
-    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-rudrashah-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" />
+  <a href="https://tarushv.com">
+    <img src="https://img.shields.io/badge/Visit-tarushv.com-3b82f6?style=for-the-badge" alt="Visit tarushv.com" />
   </a>
 </p>
 
@@ -169,7 +169,7 @@ If you find this project useful, consider buying me a coffee ☕
 
 ## Credits
 
-Designed and built by **[Rudra Shah](https://rudrahsha.in)**
+Designed and built by **[Tarushv Kosgi](https://tarushv.com)**
 
 ---
 
