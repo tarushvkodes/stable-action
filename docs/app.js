@@ -63,8 +63,9 @@
   var ROLL_SMOOTHING = 0.25;
   var TRANSLATION_SMOOTHING = 0.10;
 
-  // Crop geometry (from CameraManager.swift)
-  var CROP_FRACTION = (3 / 5) * 0.90; // 0.54
+  // Crop geometry (from CameraManager.swift cropFraction).
+  // 3/5 = base crop ratio within the sensor, × 0.90 leaves 10% extra buffer = 0.54.
+  var CROP_FRACTION = (3 / 5) * 0.90;
   var CROP_ASPECT_W = 3;
   var CROP_ASPECT_H = 4;
 
@@ -118,8 +119,11 @@
     ) {
       return DeviceMotionEvent.requestPermission().then(function (state) {
         if (state !== "granted") {
-          console.warn("Motion permission not granted — stabilisation unavailable");
+          // Camera still works without motion — stabilisation is simply unavailable
+          console.warn("Motion permission not granted — Action Mode stabilisation will be unavailable");
         }
+      }).catch(function (err) {
+        console.warn("Motion permission request failed:", err);
       });
     }
     return Promise.resolve();
@@ -145,8 +149,11 @@
     var beta = (e.beta || 0) * Math.PI / 180;
     var gamma = (e.gamma || 0) * Math.PI / 180;
 
-    // Compute raw roll angle — equivalent to iOS atan2(gravity.x, -gravity.y)
-    // gamma maps to the x-axis tilt, beta maps to the y-axis tilt
+    // Compute raw roll angle.
+    // Equivalent to iOS atan2(gravity.x, -gravity.y):
+    //   gamma → lateral (x-axis) tilt, beta → front-back (y-axis) tilt.
+    //   Using atan2(sin(gamma), cos(gamma)*cos(beta)) gives a gravity-
+    //   relative roll that matches the native CoreMotion output.
     var rawRoll = Math.atan2(Math.sin(gamma), Math.cos(gamma) * Math.cos(beta));
 
     // Continuous unwrapping (from MotionManager.swift)
@@ -255,16 +262,11 @@
     ctx.rotate(angle);
 
     // Draw the video centred at the source location
+    // drawImage(source, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
     ctx.drawImage(
       cameraVideo,
-      srcCX - vw / 2,
-      srcCY - vh / 2,
-      vw,
-      vh,
-      -vw / 2,
-      -vh / 2,
-      vw,
-      vh
+      srcCX - vw / 2, srcCY - vh / 2, vw, vh, // source rect
+      -vw / 2, -vh / 2, vw, vh                 // destination rect
     );
 
     ctx.restore();
@@ -499,7 +501,8 @@
     playbackVideo.src = recording.url;
     downloadLink.href = recording.url;
 
-    var ext = (recording.blob.type || "").indexOf("mp4") >= 0 ? "mp4" : "webm";
+    var mimeType = recording.blob.type || "";
+    var ext = mimeType.includes("mp4") ? "mp4" : "webm";
     downloadLink.download = "stable-action-" + recording.date.getTime() + "." + ext;
 
     playbackScreen.style.display = "flex";
