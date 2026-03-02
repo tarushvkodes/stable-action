@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#000000" />
+    <title>Stable Action — Horizon Lock Camera</title>
+    <meta name="description" content="Samsung Super Steady Horizon Lock — rebuilt for the web. Gyroscope-driven stabilisation, 360° roll correction, gimbal-feel translation. Works on iPhone, iPad & Android." />
+    <meta property="og:title" content="Stable Action" />
+    <meta property="og:description" content="Horizon Lock camera stabilisation — right in your browser." />
+    <meta property="og:image" content="icon.png" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="icon.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ===== Permission / Start Screen ===== -->
+    <div id="startScreen" class="screen start-screen">
+      <div class="start-content">
+        <img src="icon.png" alt="Stable Action" class="start-icon" width="88" height="88" />
+        <h1 class="start-title">Stable Action</h1>
+        <p class="start-sub">Samsung Super Steady Horizon Lock — rebuilt for the web.</p>
+        <p class="start-desc">Gyroscope-driven stabilisation, full 360° roll correction, gimbal-feel translation. Works on iPhone, iPad &amp; Android.</p>
+        <button id="startBtn" class="start-btn">
+          <span class="start-btn-icon">📷</span>
+          Open Camera
+        </button>
+        <p class="start-note">Requires camera &amp; motion sensor access.</p>
+        <div class="start-badges">
+          <span class="start-badge">iPhone</span>
+          <span class="start-badge">iPad</span>
+          <span class="start-badge">Android</span>
+          <span class="start-badge">Horizon Lock</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Camera App Screen ===== -->
+    <div id="cameraScreen" class="screen camera-screen" style="display:none;">
+
+      <!-- Top bar -->
+      <div class="top-bar">
+        <div id="recIndicator" class="rec-indicator" style="display:none;">
+          <span class="rec-dot"></span>
+          <span class="rec-label">REC</span>
+        </div>
+        <div class="top-right">
+          <span class="dev-credit">Developer: <a href="https://tarushv.com" target="_blank" rel="noopener"><strong>Tarushv Kosgi</strong></a></span>
+        </div>
+      </div>
+
+      <!-- Camera viewport -->
+      <div id="viewport" class="viewport">
+        <!-- Hidden video element for camera stream -->
+        <video id="cameraVideo" autoplay playsinline muted></video>
+
+        <!-- Canvas where stabilised frames are drawn -->
+        <canvas id="previewCanvas"></canvas>
+
+        <!-- Horizon rectangle overlay (Action Mode) -->
+        <div id="horizonRect" class="horizon-rect" style="display:none;">
+          <div class="horizon-corner tl"></div>
+          <div class="horizon-corner tr"></div>
+          <div class="horizon-corner bl"></div>
+          <div class="horizon-corner br"></div>
+        </div>
+
+        <!-- Focus square -->
+        <div id="focusSquare" class="focus-square" style="display:none;"></div>
+
+        <!-- Mode label overlay -->
+        <div id="modeLabel" class="mode-label">Normal Mode</div>
+      </div>
+
+      <!-- Bottom controls -->
+      <div class="bottom-controls">
+        <div class="controls-row">
+          <!-- Thumbnail / last recording -->
+          <button id="thumbBtn" class="thumb-btn" aria-label="View last recording">
+            <div id="thumbContent" class="thumb-placeholder">
+              <span>🎬</span>
+            </div>
+          </button>
+
+          <!-- Record button -->
+          <button id="recordBtn" class="record-btn" aria-label="Record">
+            <div class="record-btn-ring">
+              <div id="recordBtnInner" class="record-btn-inner"></div>
+            </div>
+          </button>
+
+          <!-- Gallery button -->
+          <button id="galleryBtn" class="gallery-btn" aria-label="Gallery">
+            <span>🖼️</span>
+          </button>
+        </div>
+
+        <!-- Normal / Action toggle -->
+        <div class="toggle-container">
+          <div id="modeToggle" class="mode-toggle">
+            <div id="toggleKnob" class="toggle-knob"></div>
+            <button id="normalBtn" class="toggle-label active" data-mode="normal">
+              <span class="toggle-icon">🎥</span> Normal
+            </button>
+            <button id="actionBtn" class="toggle-label" data-mode="action">
+              <span class="toggle-icon">⚡</span> Action
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Gallery Screen ===== -->
+    <div id="galleryScreen" class="screen gallery-screen" style="display:none;">
+      <div class="gallery-header">
+        <button id="galleryBack" class="gallery-back-btn" aria-label="Back">✕</button>
+        <h2 class="gallery-title">Gallery</h2>
+        <div style="width:44px;"></div>
+      </div>
+      <div id="galleryGrid" class="gallery-grid">
+        <p class="gallery-empty" id="galleryEmpty">No recordings yet.<br />Record a video to see it here.</p>
+      </div>
+    </div>
+
+    <!-- ===== Playback Screen ===== -->
+    <div id="playbackScreen" class="screen playback-screen" style="display:none;">
+      <button id="playbackClose" class="playback-close" aria-label="Close">✕</button>
+      <video id="playbackVideo" controls playsinline></video>
+      <a id="downloadLink" class="download-btn" download="stable-action.webm">⬇ Save Video</a>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
