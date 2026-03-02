@@ -228,9 +228,10 @@ html, body {
   display: none;
 }
 
-/* In action mode, hide video show canvas */
-.camera-screen.action-mode #cameraVideo { display: none; }
-.camera-screen.action-mode #previewCanvas { display: block; }
+/* In action mode, keep video rendering but invisible so iOS/iPadOS Safari
+   continues decoding frames (display:none stops the decoder). */
+.camera-screen.action-mode #cameraVideo { opacity: 0; pointer-events: none; }
+.camera-screen.action-mode #previewCanvas { display: block; z-index: 1; }
 
 /* Horizon rectangle overlay */
 .horizon-rect {
