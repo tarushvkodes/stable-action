@@ -85,6 +85,9 @@
   function initCamera(facingMode) {
     facingMode = facingMode || "environment";
 
+    // Stop any active recording before tearing down the stream
+    if (isRecording) stopRecording();
+
     // Stop existing stream tracks when switching cameras
     if (stream) {
       stream.getTracks().forEach(function (t) { t.stop(); });
@@ -139,7 +142,6 @@
   }
 
   function switchCamera() {
-    if (isRecording) stopRecording();
     var newMode = currentFacingMode === "environment" ? "user" : "environment";
     initCamera(newMode);
   }
