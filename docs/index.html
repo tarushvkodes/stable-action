@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stable Action — Horizon Lock for iPhone</title>
+    <meta
+      name="description"
+      content="Samsung Super Steady Horizon Lock — rebuilt for iPhone. Gyroscope-driven stabilisation, 360° roll correction, gimbal-feel translation. 100% on-device."
+    />
+    <meta property="og:title" content="Stable Action" />
+    <meta
+      property="og:description"
+      content="Samsung Super Steady Horizon Lock — rebuilt for iPhone."
+    />
+    <meta property="og:image" content="icon.png" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="icon.png" type="image/png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- ===== Navigation ===== -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="#" class="nav-brand" aria-label="Stable Action home">
+          <img src="icon.png" alt="" width="32" height="32" />
+          Stable Action
+        </a>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#modes">Modes</a></li>
+          <li><a href="#install">Install</a></li>
+        </ul>
+        <a
+          href="https://github.com/tarushvkodes/stable-action/releases/latest"
+          class="nav-cta"
+          >Download</a
+        >
+      </div>
+    </nav>
+
+    <!-- ===== Hero ===== -->
+    <header class="hero" id="top">
+      <div class="hero-content">
+        <img
+          src="icon.png"
+          alt="Stable Action app icon"
+          class="hero-icon"
+          width="100"
+          height="100"
+        />
+        <h1>
+          Samsung Super Steady.<br />
+          <span class="gradient">Now on iPhone.</span>
+        </h1>
+        <p class="hero-sub">
+          Galaxy S26 Ultra's Horizon Lock — rebuilt in native Swift. Gyroscope-driven
+          stabilisation, full 360° roll, gimbal-feel translation. Runs 100%
+          on-device. No subscriptions. No cloud.
+        </p>
+        <div class="hero-buttons">
+          <a
+            href="https://github.com/tarushvkodes/stable-action/releases/latest"
+            class="btn btn-primary"
+            >⬇ Download IPA</a
+          >
+          <a
+            href="https://github.com/tarushvkodes/stable-action"
+            class="btn btn-outline"
+            >View Source</a
+          >
+        </div>
+        <div class="hero-badges">
+          <span class="badge">iOS 17+</span>
+          <span class="badge">Swift</span>
+          <span class="badge">Action | Normal</span>
+          <span class="badge">Horizon Lock</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== Demo ===== -->
+    <section class="demo fade-in" aria-label="App demo">
+      <div class="demo-container">
+        <img
+          src="demo.gif"
+          alt="Stable Action demo showing horizon lock stabilisation in action"
+          width="380"
+          loading="lazy"
+        />
+      </div>
+    </section>
+
+    <!-- ===== Features ===== -->
+    <section class="section fade-in" id="features">
+      <p class="section-label">Features</p>
+      <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+      <p class="section-desc">
+        Built for one thing — buttery-smooth, horizon-locked footage — and doing
+        it perfectly.
+      </p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Horizon Lock</h3>
+          <p>
+            Gyroscope-driven crop counter-rotation at 120 Hz. The horizon stays
+            flat no matter how much you tilt or shake.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Full 360° Roll</h3>
+          <p>
+            Continuous angle unwrapping across the ±180° boundary. Spin the
+            phone a full 360° — no flip, no jump.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📐</div>
+          <h3>Gimbal-feel Translation</h3>
+          <p>
+            Velocity-damped X/Y stabilisation with position decay at 0.992.
+            Hold-and-release feel of a real gimbal.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔧</div>
+          <h3>Hardware ISP</h3>
+          <p>
+            Engages the iPhone's built-in ISP stabilisation on every frame.
+            <code>.cinematicExtendedEnhanced</code> in Action Mode.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">👁</div>
+          <h3>Preview = Recording</h3>
+          <p>
+            Same pipeline for preview and recording. What you see is exactly
+            what you get — no surprises.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎬</div>
+          <h3>Two Modes</h3>
+          <p>
+            Normal Mode for full-frame 1× wide capture. Action Mode for full
+            Horizon Lock with ultra-wide lens.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🗂</div>
+          <h3>Gallery</h3>
+          <p>
+            In-app browser for all recordings with full-screen playback. Review
+            your stabilised footage instantly.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Tap to Focus</h3>
+          <p>
+            Lock focus and exposure to any point on screen with a single tap.
+            Yellow square confirms focus lock.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💾</div>
+          <h3>Auto Save</h3>
+          <p>
+            Saves finished clips to your Photos library automatically when you
+            stop recording. Zero friction.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== How It Works ===== -->
+    <section class="section fade-in" id="how-it-works">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">Two corrections, every frame.</h2>
+      <p class="section-desc">
+        A floating crop window inside a larger sensor buffer — rotated and
+        shifted in real time to cancel out your movement.
+      </p>
+
+      <div class="how-grid">
+        <div class="how-card">
+          <div class="step">1</div>
+          <h3>The Horizon Rectangle</h3>
+          <p>
+            In Action Mode you see a cropped 3:4 portrait window floating in
+            the sensor output. The surrounding space is the buffer the
+            stabilisation uses to rotate and shift without ever hitting the
+            edge.
+          </p>
+        </div>
+        <div class="how-card">
+          <div class="step">2</div>
+          <h3>Roll Correction</h3>
+          <p>
+            The phone tilts — the crop window rotates the opposite direction by
+            the exact same amount. They cancel out. The horizon stays flat.
+            Fully continuous 360° angle unwrapping.
+          </p>
+        </div>
+        <div class="how-card">
+          <div class="step">3</div>
+          <h3>Translation Correction</h3>
+          <p>
+            The phone jerks sideways or up/down — the crop window slides the
+            opposite way to compensate. When movement stops, the window drifts
+            back to centre with gimbal-feel decay.
+          </p>
+        </div>
+        <div class="how-card">
+          <div class="step">4</div>
+          <h3>Hardware On Top</h3>
+          <p>
+            The iPhone's built-in ISP stabilisation cleans up micro-jitter —
+            hand tremor, footstep impact, engine vibration. Software handles
+            the macro roll. The two layers stack.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Modes Comparison ===== -->
+    <section class="section fade-in" id="modes">
+      <p class="section-label">Modes</p>
+      <h2 class="section-title">Normal vs Action Mode</h2>
+      <p class="section-desc">
+        Switch between full-frame capture and full stabilisation with a single
+        tap.
+      </p>
+
+      <div class="comparison">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Normal Mode</th>
+              <th>Action Mode</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Lens</td>
+              <td>1× Wide</td>
+              <td>Ultra-wide (crop buffer)</td>
+            </tr>
+            <tr>
+              <td>Preview</td>
+              <td>Full sensor frame</td>
+              <td>Stabilised 3:4 crop</td>
+            </tr>
+            <tr>
+              <td>Roll Correction</td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="check">✓</span> (360° continuous)</td>
+            </tr>
+            <tr>
+              <td>Translation</td>
+              <td><span class="cross">✗</span></td>
+              <td><span class="check">✓</span> (gimbal-feel)</td>
+            </tr>
+            <tr>
+              <td>Hardware ISP</td>
+              <td><code>.auto</code></td>
+              <td><code>.cinematicExtendedEnhanced</code></td>
+            </tr>
+            <tr>
+              <td>Recorded Area</td>
+              <td>Full frame</td>
+              <td>Stabilised crop only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== Installation ===== -->
+    <section class="section fade-in" id="install">
+      <p class="section-label">Installation</p>
+      <h2 class="section-title">No App Store required.</h2>
+      <p class="section-desc">
+        Download the <code>.ipa</code> directly from GitHub Releases and
+        sideload it onto your iPhone.
+      </p>
+
+      <div class="install-cards">
+        <div class="install-card">
+          <h3>
+            📱 AltStore <span class="tag">Recommended</span>
+          </h3>
+          <ol>
+            <li>
+              Install
+              <a href="https://altstore.io" target="_blank" rel="noopener"
+                >AltStore</a
+              >
+              on your Mac or PC.
+            </li>
+            <li>
+              Download <strong>StableAction_1.0.ipa</strong> from the
+              <a
+                href="https://github.com/tarushvkodes/stable-action/releases/latest"
+                target="_blank"
+                rel="noopener"
+                >latest release</a
+              >.
+            </li>
+            <li>Open the .ipa on your iPhone via Share → AltStore → Install.</li>
+            <li>
+              AltStore re-signs automatically every 7 days on the same Wi-Fi.
+            </li>
+          </ol>
+        </div>
+        <div class="install-card">
+          <h3>💻 Sideloadly</h3>
+          <ol>
+            <li>
+              Download
+              <a href="https://sideloadly.io" target="_blank" rel="noopener"
+                >Sideloadly</a
+              >
+              on your computer.
+            </li>
+            <li>
+              Download <strong>StableAction_1.0.ipa</strong> from the
+              <a
+                href="https://github.com/tarushvkodes/stable-action/releases/latest"
+                target="_blank"
+                rel="noopener"
+                >latest release</a
+              >.
+            </li>
+            <li>
+              Connect your iPhone via USB, drag the .ipa into Sideloadly, and
+              sign in.
+            </li>
+            <li>
+              On iPhone: Settings → General → VPN &amp; Device Management →
+              Trust.
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <p>
+          Designed and built by
+          <a href="https://rudrahsha.in" target="_blank" rel="noopener"
+            >Rudra Shah</a
+          >
+        </p>
+        <a
+          href="https://buymeacoffee.com/rudrashah"
+          class="coffee-btn"
+          target="_blank"
+          rel="noopener"
+          >☕ Buy Me a Coffee</a
+        >
+        <p style="margin-top: 16px">
+          Built for iPhone · Inspired by Samsung Galaxy S26 Ultra Super Steady
+          Horizon Lock
+        </p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
