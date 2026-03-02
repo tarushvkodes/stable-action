@@ -145,6 +145,30 @@ html, body {
   white-space: nowrap;
 }
 
+.top-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.flip-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s;
+}
+
+.flip-btn:active { background: rgba(255,255,255,0.3); }
+
 .dev-credit {
   font-size: 0.65rem;
   color: rgba(255,255,255,0.5);
