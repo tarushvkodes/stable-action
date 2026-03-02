@@ -58,6 +58,9 @@
   var SENSITIVITY = 0.035;
   var ACCEL_DEAD_ZONE = 0.02;
 
+  // Screen orientation tracking
+  var prevScreenAngle = 0;
+
   // Smoothing (from CameraManager.swift)
   var smoothedRoll = 0;
   var smoothedNormX = 0;
@@ -164,48 +167,86 @@
     return Promise.resolve();
   }
 
+  // ===== Screen orientation helper =====
+  function getScreenAngleRad() {
+    if (typeof window.orientation === "number") {
+      return window.orientation * Math.PI / 180;
+    }
+    if (screen.orientation && typeof screen.orientation.angle === "number") {
+      var a = screen.orientation.angle;
+      if (a > 180) a -= 360; // 270 → -90
+      return a * Math.PI / 180;
+    }
+    return 0;
+  }
+
   // ===== Motion Tracking (ported from MotionManager.swift) =====
   function startMotionTracking() {
     if (motionStarted) return;
     motionStarted = true;
 
-    // DeviceOrientation gives us gravity-based orientation
-    window.addEventListener("deviceorientation", handleOrientation, true);
+    prevScreenAngle = getScreenAngleRad();
 
-    // DeviceMotion gives us acceleration for translation correction
+    // DeviceMotion gives us both gravity (for roll) and acceleration (for translation)
     window.addEventListener("devicemotion", handleMotion, true);
-  }
 
-  function handleOrientation(e) {
-    // On mobile: beta = front/back tilt, gamma = left/right tilt
-    // We compute roll similar to iOS: atan2(gravity.x, -gravity.y)
-    // In web DeviceOrientation: gamma ≈ gravity.x axis, beta ≈ gravity.y axis
-    // Convert degrees to radians
-    var beta = (e.beta || 0) * Math.PI / 180;
-    var gamma = (e.gamma || 0) * Math.PI / 180;
-
-    // Compute raw roll angle.
-    // Equivalent to iOS atan2(gravity.x, -gravity.y):
-    //   gamma → lateral (x-axis) tilt, beta → front-back (y-axis) tilt.
-    //   Using atan2(sin(gamma), cos(gamma)*cos(beta)) gives a gravity-
-    //   relative roll that matches the native CoreMotion output.
-    var rawRoll = Math.atan2(Math.sin(gamma), Math.cos(gamma) * Math.cos(beta));
-
-    // Continuous unwrapping (from MotionManager.swift)
-    var delta = rawRoll - previousRawRoll;
-    if (delta > Math.PI) delta -= 2 * Math.PI;
-    if (delta < -Math.PI) delta += 2 * Math.PI;
-    previousRawRoll = rawRoll;
-    rollUnwrapped += delta;
-    roll = rollUnwrapped;
+    // Reset roll state when screen orientation changes
+    var onOrientationChange = function () {
+      prevScreenAngle = getScreenAngleRad();
+      previousRawRoll = 0;
+      rollUnwrapped = 0;
+      roll = 0;
+      smoothedRoll = 0;
+    };
+    window.addEventListener("orientationchange", onOrientationChange, false);
+    if (screen.orientation) {
+      screen.orientation.addEventListener("change", onOrientationChange, false);
+    }
   }
 
   function handleMotion(e) {
-    var accel = e.accelerationIncludingGravity || e.acceleration;
-    if (!accel) return;
-
-    // Use acceleration (without gravity if available, else approximate)
+    var aig = e.accelerationIncludingGravity;
     var acc = e.acceleration;
+
+    // ── Roll from gravity (replaces DeviceOrientation for full 360°) ──
+    // Derive gravity vector: accelerationIncludingGravity minus user acceleration
+    var gx = 0;
+    var gy = 0;
+    if (aig && aig.x != null && aig.y != null) {
+      if (acc && acc.x != null && acc.y != null) {
+        gx = aig.x - acc.x;
+        gy = aig.y - acc.y;
+      } else {
+        gx = aig.x;
+        gy = aig.y;
+      }
+    }
+
+    // Only update roll if gravity signal is strong enough
+    var gMag = Math.sqrt(gx * gx + gy * gy);
+    if (gMag > 0.5) {
+      // roll = atan2(gravity.x, -gravity.y) — matches iOS CoreMotion
+      var rawRoll = Math.atan2(gx, -gy);
+
+      // Adjust for current screen orientation so stabilisation is
+      // relative to the screen, not absolute device portrait.
+      var screenAngle = getScreenAngleRad();
+      rawRoll -= screenAngle;
+
+      // Normalize to (-π, π]
+      while (rawRoll > Math.PI) rawRoll -= 2 * Math.PI;
+      while (rawRoll < -Math.PI) rawRoll += 2 * Math.PI;
+
+      // Continuous unwrapping (from MotionManager.swift)
+      var delta = rawRoll - previousRawRoll;
+      if (delta > Math.PI) delta -= 2 * Math.PI;
+      if (delta < -Math.PI) delta += 2 * Math.PI;
+      previousRawRoll = rawRoll;
+      rollUnwrapped += delta;
+      roll = rollUnwrapped;
+    }
+
+    // ── Translation (X/Y shift from user acceleration) ──
     var ax = 0;
     var ay = 0;
 
@@ -218,9 +259,13 @@
     if (Math.abs(ax) < ACCEL_DEAD_ZONE) ax = 0;
     if (Math.abs(ay) < ACCEL_DEAD_ZONE) ay = 0;
 
+    // Use event interval if available for more accurate integration
+    var dt = (e.interval ? e.interval / 1000 : DT);
+    if (dt <= 0 || dt > 0.1) dt = DT;
+
     // Integrate acceleration → velocity, then decay
-    velX = (velX + ax * DT) * VELOCITY_DECAY;
-    velY = (velY + ay * DT) * VELOCITY_DECAY;
+    velX = (velX + ax * dt) * VELOCITY_DECAY;
+    velY = (velY + ay * dt) * VELOCITY_DECAY;
 
     // Integrate velocity → offset, then decay toward centre
     offsetX = (offsetX - velX * SENSITIVITY) * POSITION_DECAY;
@@ -305,9 +350,6 @@
     );
 
     ctx.restore();
-
-    // Update horizon rectangle overlay position
-    updateHorizonRect();
   }
 
   // ===== Horizon Rectangle Overlay (ported from HorizonRectangleView.swift) =====
@@ -348,7 +390,7 @@
       normalBtn.classList.remove("active");
       actionBtn.classList.add("active");
       modeLabel.textContent = "Action Mode — Horizon Lock";
-      horizonRect.style.display = "block";
+      horizonRect.style.display = "none";
     } else {
       cameraScreen.classList.remove("action-mode");
       toggleKnob.classList.remove("action");
